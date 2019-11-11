@@ -2,10 +2,9 @@ package ru.geekbrains.Chat;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-public class ClientGUI  extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler {
+public class ClientGUI  extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler{
 
     private static final int WIDTH = 400;
     private static final int HEIGHT = 300;
@@ -49,7 +48,15 @@ public class ClientGUI  extends JFrame implements ActionListener, Thread.Uncaugh
         userList.setListData(users);
         scrollUsers.setPreferredSize(new Dimension(100, 0));
         cbAlwaysOnTop.addActionListener(this);
-
+        btnSend.addActionListener(this);
+        tfMessage.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    sendMessage();
+                }
+            }
+        });
 
         panelTop.add(tfIPAddress);
         panelTop.add(tfPort);
@@ -73,9 +80,11 @@ public class ClientGUI  extends JFrame implements ActionListener, Thread.Uncaugh
         Object src = e.getSource();
         if (src == cbAlwaysOnTop) {
             setAlwaysOnTop(cbAlwaysOnTop.isSelected());
-        } else {
-            throw new RuntimeException("Unknown source: " + src);
-        }
+        } else if (src == btnSend ) {
+            sendMessage();
+            } else{
+                throw new RuntimeException("Unknown source: " + src);
+            }
     }
 
     @Override
@@ -88,5 +97,14 @@ public class ClientGUI  extends JFrame implements ActionListener, Thread.Uncaugh
 
         JOptionPane.showMessageDialog(this, msg, "Exception", JOptionPane.ERROR_MESSAGE);
         System.exit(1);
+    }
+
+
+    private void sendMessage(){
+        if(!tfMessage.getText().isEmpty()) {
+            Message m = new Message(tfMessage.getText());
+            log.append(m.send() + "\n");
+            tfMessage.setText("");
+      }
     }
 }
