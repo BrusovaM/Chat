@@ -1,4 +1,4 @@
-package ru.gb.jtwo.lfour.online;
+package ru.geekbrains.Chat;
 
 import javax.swing.*;
 import java.awt.*;
