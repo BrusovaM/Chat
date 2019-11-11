@@ -49,7 +49,7 @@ public class ClientGUI  extends JFrame implements ActionListener, Thread.Uncaugh
         userList.setListData(users);
         scrollUsers.setPreferredSize(new Dimension(100, 0));
         cbAlwaysOnTop.addActionListener(this);
-
+        btnSend.addActionListener(this);
 
         panelTop.add(tfIPAddress);
         panelTop.add(tfPort);
@@ -73,9 +73,15 @@ public class ClientGUI  extends JFrame implements ActionListener, Thread.Uncaugh
         Object src = e.getSource();
         if (src == cbAlwaysOnTop) {
             setAlwaysOnTop(cbAlwaysOnTop.isSelected());
-        } else {
-            throw new RuntimeException("Unknown source: " + src);
-        }
+        } else if (src == btnSend) {
+            if(!tfMessage.getText().isEmpty()) {
+                Message m = new Message(tfMessage.getText());
+                log.append(m.send() + "\n");
+                tfMessage.setText("");
+                }
+            } else{
+                throw new RuntimeException("Unknown source: " + src);
+            }
     }
 
     @Override
