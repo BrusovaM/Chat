@@ -1,4 +1,4 @@
-package ru.gb.jtwo.lfour.online;
+package ru.geekbrains.Chat;
 
 public class ChatServer {
     public void start(int port) {
